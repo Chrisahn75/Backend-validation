@@ -10,23 +10,50 @@ const schema = Joi.object({
 })
 
 const users = [
-  username = "Michel",
-  email = "michellechauve@gmail.com",
-  age = 38,
-  city= "Dunkerque",
+  {
+    username: "Michel",
+    email: "michel@gmail.com",
+    age: 38,
+    city: "Dunkerque",
+  },
 ];
 
-router.get("/users/:username", (req, res) => {
-  res.send("username: " + req.params.username);
+router.get("/", (_req, res) => {
+  res.json(users);
 });
 
-const validationResult = schema.validate(product);
-
-if (validationResult.error) {
-  return res.status(400).json({
-    message: validationResult.error,
+router.get("/users/:username", (req, res) => {
+  const username = users.find((user) => {
+    return (
+      req.params.username.toLocaleLowerCase() === user.username.toLocaleLowerCase()
+    );
   });
-}
 
+  if (!username) {
+    return res.json({
+      message: "User don't exist",
+    });
+  }
+  res.json(username);
+});
+
+router.post("/users", (req, res) => {
+  const user = req.body;
+
+  const validationResult = schema.validate(user);
+
+  if (validationResult.error) {
+    return res.status(400).json({
+      message: validationResult.error,
+    });
+  }
+
+  users.push(user);
+
+  res.json({
+    message: "User added",
+    users,
+  });
+});
 
 module.exports = router;

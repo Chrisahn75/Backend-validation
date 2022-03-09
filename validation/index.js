@@ -1,10 +1,15 @@
 const express = require("express");
 const app = express();
 
-const userRouter = require("./routers/usersRouter");
+const usersRouter = require("./routers/usersRouter");
+
+app.use((req, res, next) => {
+    console.log("Request received");
+    next();
+  });
 
 app.use(express.json());
-app.use("/users", userRouter);
+app.use("/users", usersRouter);
 
 
 app.use("*", (err, req, res, next) => {
