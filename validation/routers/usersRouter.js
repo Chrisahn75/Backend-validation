@@ -37,6 +37,16 @@ router.get("/users/:username", (req, res) => {
   res.json(username);
 });
 
+router.get("/users/id/:id", (req, res) => {
+  const id = users[req.params.id - 1];
+
+  if (!id) {
+    return res.json({
+      message: "ID not found",
+    });
+  }
+  res.json(id);
+});
 router.post("/users", (req, res) => {
   const user = req.body;
 
