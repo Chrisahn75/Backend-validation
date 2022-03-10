@@ -47,6 +47,22 @@ router.get("/users/id/:id", (req, res) => {
   }
   res.json(id);
 });
+
+router.get("/users/email/:email", (req, res) => {
+  const email = users.find((user) => {
+    return (
+      req.params.email.toLocaleLowerCase() === user.email.toLocaleLowerCase()
+    );
+  });
+
+  if (!email) {
+    return res.json({
+      message: "Email don't exist",
+    });
+  }
+  res.json(email);
+});
+
 router.post("/users", (req, res) => {
   const user = req.body;
 
